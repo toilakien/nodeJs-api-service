@@ -3,7 +3,11 @@ const app = express();
 const mongoose = require("mongoose");
 const dotenv = require("dotenv");
 var bodyParser = require("body-parser");
+const cors = require("cors");
+const morgan = require("morgan");
+if (process.env.NODE_ENV === "development") app.use(morgan("dev"));
 
+app.use(cors());
 app.use(function (req, res, next) {
   res.header("Access-Control-Allow-Origin", "*");
   res.header("Access-Control-Allow-Methods", "GET,PUT,POST,DELETE");
@@ -20,14 +24,6 @@ dotenv.config();
 const Port = process.env.PORT;
 const DB = process.env.MONGO_URI;
 //connect mongo db
-mongoose
-  .connect(DB)
-  .then(() => {
-    console.log("Successfully connected ");
-  })
-  .catch((error) => {
-    console.log(`can not connect to database, ${error}`);
-  });
 
 //router
 const authRouter = require("./routers/authRouter");
@@ -35,4 +31,14 @@ app.use("/api/v1", authRouter);
 const customerRouter = require("./routers/customerRouter");
 app.use("/api/v1/customer", customerRouter);
 
-app.listen(Port, () => console.log(`Localhost listening on to ${Port} ...`));
+app.listen(Port, () => {
+  console.log(`Localhost listening on to ${Port} ...`);
+  mongoose
+    .connect(DB)
+    .then(() => {
+      console.log("Successfully connected ");
+    })
+    .catch((error) => {
+      console.log(`can not connect to database, ${error}`);
+    });
+});

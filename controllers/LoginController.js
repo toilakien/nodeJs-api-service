@@ -4,8 +4,7 @@ const fn_services = require("../services/UseServices");
 const e_d_code = require("../utils/en_decodepassword");
 
 const login = async (req, res, next) => {
-  const { username } = req.body;
-  const { password } = req.body;
+  const { username, password } = req.body;
   try {
     const acountTrue = await fn_services.findUser({ username });
     console.log(acountTrue);
