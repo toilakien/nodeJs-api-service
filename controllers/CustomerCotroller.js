@@ -29,6 +29,8 @@ const addCustomer = (req, res, next) => {
       res.status(400).json("NOT FOUND 404 !");
     });
 };
+//get all customer
+
 const getAllCustomer = (req, res, next) => {
   CustomerSchema.find({})
     .then((data) => {
@@ -47,6 +49,7 @@ const getAllCustomer = (req, res, next) => {
       res.status(400).json("NOT FOUND 404 !");
     });
 };
+//get 1 customer
 const getOneCustomer = (req, res, next) => {
   const id = req.params.id;
   CustomerSchema.findById(id)
@@ -60,10 +63,59 @@ const getOneCustomer = (req, res, next) => {
       } else {
         res.status(400).json("NOT FOUND");
       }
-    })  
-
+    })
     .catch((err) => {
       res.status(400).json("NOT FOUND 404 !");
     });
 };
-module.exports = { addCustomer, getAllCustomer, getOneCustomer };
+
+const editCustomer = (req, res, next) => {
+  const id = req.params.id;
+  const { name } = req.body;
+  const { code } = req.body;
+  const { active } = req.body;
+  CustomerSchema.findByIdAndUpdate(id, {
+    name: name,
+    code: code,
+    active: active,
+  })
+    .then((data) => {
+      if (data) {
+        res.status(200).json({
+          success: {
+            data: data,
+          },
+        });
+      } else {
+        res.status(400).json("NOT FOUND");
+      }
+    })
+    .catch((err) => {
+      res.status(400).json("NOT FOUND 404 !");
+    });
+};
+const deleteCustomer = (req, res, next) => {
+  const id = req.params.id;
+  CustomerSchema.findByIdAndDelete(id)
+    .then((data) => {
+      if (data) {
+        res.status(200).json({
+          success: {
+            data: data,
+          },
+        });
+      } else {
+        res.status(400).json("NOT FOUND");
+      }
+    })
+    .catch((err) => {
+      res.status(400).json("NOT FOUND 404 !");
+    });
+};
+module.exports = {
+  addCustomer,
+  getAllCustomer,
+  getOneCustomer,
+  editCustomer,
+  deleteCustomer,
+};

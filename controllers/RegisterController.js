@@ -1,28 +1,20 @@
-const express = require("express");
-const AdminSchema = require("../models/Admin");
-
-const register = (req, res, next) => {
+const fn_services = require("../services/UseServices");
+const e_d_code = require("../utils/en_decodepassword");
+const register = async (req, res, next) => {
   const { username } = req.body;
-  const { password } = req.body;
-  AdminSchema.findOne({ username: username })
-    .then((data) => {
-      if (data) {
-        res.status(400).json("Username already exists");
-      } else {
-        return AdminSchema.create({
-          username: username,
-          password: password,
-        });
-      }
-    })
-    .then((data) => {
-      if (data) {
-        res.json("Create successfully !!");
-      }
-    })
-    .catch((err) => {
-      console.log(err);
-      res.json("Create error!");
-    });
+  const password = e_d_code.fn_encode(req.body.password);
+  try {
+    console.log(password);
+    const user = await fn_services.findUser({ username });
+    if (!user) {
+      const newUser = { username: username, password: password };
+      fn_services.createUser(newUser);
+      return res.status(200).json("Create successfully !");
+    } else {
+      return res.status(404).json("Username already exists!");
+    }
+  } catch (error) {
+    res.status(404).json(error);
+  }
 };
 module.exports = register;

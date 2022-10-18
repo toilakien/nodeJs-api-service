@@ -1,24 +1,46 @@
 var jwt = require("jsonwebtoken");
-const AdminSchema = require("../models/Admin");
 
-const login = (req, res, next) => {
+const fn_services = require("../services/UseServices");
+const e_d_code = require("../utils/en_decodepassword");
+
+const login = async (req, res, next) => {
   const { username } = req.body;
   const { password } = req.body;
-  AdminSchema.findOne({
-    username: username,
-    password: password,
-  }).then((data) => {
-    if (data) {
-      var token = jwt.sign({ _id: data._id }, password);
-      return res.json({
-        message: "Success",
-        data: {
-          token: token,
-        },
-      });
+  try {
+    const acountTrue = await fn_services.findUser({ username });
+    console.log(acountTrue);
+    if (acountTrue) {
+      if (e_d_code.fn_checkcode(password, acountTrue.password)) {
+        var token = jwt.sign({ _id: acountTrue._id }, acountTrue.password);
+        return res.json({
+          message: "Success",
+          data: {
+            token: token,
+          },
+        });
+      } else {
+        res.status(404).json("NOT FOUND 404!");
+      }
     } else {
-      res.status(500).json("You need create acc to login !!");
+      res.status(404).json("NOT FOUND 404!");
     }
-  });
+  } catch (error) {
+    console.log(error);
+  }
 };
-module.exports = login;
+const verify = (req, res, next) => {
+  try {
+    var token = req.header("auth-token");
+    if (!token) {
+      res.status(404).json("Login faild!");
+    } else {
+      const verifyToken = jwt.verify(token, "mk");
+      if (verifyToken) {
+        next();
+      }
+    }
+  } catch (error) {
+    return res.json("You need login to access website !");
+  }
+};
+module.exports = { login, verify };
