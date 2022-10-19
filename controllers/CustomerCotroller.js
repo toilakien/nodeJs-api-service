@@ -1,5 +1,5 @@
-const CustomerSchema = require("../models/Customer");
 const services_customer = require("../services/CustomerServices");
+//add customer
 const addCustomer = async (req, res, next) => {
   const { name } = req.body;
   const { code } = req.body;
@@ -26,7 +26,6 @@ const addCustomer = async (req, res, next) => {
   }
 };
 //get all customer
-
 const getAllCustomer = async (req, res, next) => {
   const customers = await services_customer.findAllCustomer();
   try {
@@ -61,7 +60,7 @@ const getOneCustomer = async (req, res, next) => {
     res.status(400).json(error);
   }
 };
-
+//edit customer
 const editCustomer = async (req, res, next) => {
   const id = req.params.id;
   const { name, code, active } = req.body;
@@ -91,7 +90,7 @@ const editCustomer = async (req, res, next) => {
     res.status(400).json(error);
   }
 };
-
+//delete customer
 const deleteCustomer = async (req, res, next) => {
   const id = req.params.id;
   const customers = await services_customer.findByIdAndDelete(id);

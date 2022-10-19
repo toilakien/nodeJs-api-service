@@ -2,7 +2,7 @@ var jwt = require("jsonwebtoken");
 
 const fn_services = require("../services/UseServices");
 const e_d_code = require("../utils/en_decodepassword");
-
+//function login
 const login = async (req, res, next) => {
   const { username, password } = req.body;
   try {
@@ -27,6 +27,7 @@ const login = async (req, res, next) => {
     console.log(error);
   }
 };
+//fn verify
 const verify = (req, res, next) => {
   try {
     var token = req.header("auth-token");
