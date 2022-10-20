@@ -1,4 +1,5 @@
 const services_customer = require("../services/CustomerServices");
+const enum_status = require("../enum/status-code.enum");
 //add customer
 const addCustomer = async (req, res, next) => {
   const { name } = req.body;
@@ -13,16 +14,16 @@ const addCustomer = async (req, res, next) => {
         code,
         active,
       });
-      res.status(200).json({
+      res.status(enum_status.CREATED).json({
         success: {
           data: newCustomer,
         },
       });
     } else {
-      res.status(400).json("Customer already exists");
+      res.status(enum_status.BAD_REQUEST).json("Customer already exists");
     }
   } catch (error) {
-    res.status(400).json(error);
+    res.status(enum_status.BAD_REQUEST).json(error);
   }
 };
 //get all customer
@@ -30,16 +31,16 @@ const getAllCustomer = async (req, res, next) => {
   const customers = await services_customer.findAllCustomer();
   try {
     if (customers) {
-      res.status(200).json({
+      res.status(enum_status.OK).json({
         success: {
           data: customers,
         },
       });
     } else {
-      res.status(400).json("Not customer !");
+      res.status(enum_status.BAD_REQUEST).json("Not customer !");
     }
   } catch (error) {
-    res.status(400).json(error);
+    res.status(enum_status.BAD_REQUEST).json(error);
   }
 };
 //get 1 customer
@@ -48,16 +49,16 @@ const getOneCustomer = async (req, res, next) => {
   const customers = await services_customer.findByID(id);
   try {
     if (customers) {
-      res.status(200).json({
+      res.status(enum_status.OK).json({
         success: {
           data: customers,
         },
       });
     } else {
-      res.status(400).json("Not found customer !");
+      res.status(enum_status.BAD_REQUEST).json("Not found customer !");
     }
   } catch (error) {
-    res.status(400).json(error);
+    res.status(enum_status.BAD_REQUEST).json(error);
   }
 };
 //edit customer
@@ -78,16 +79,16 @@ const editCustomer = async (req, res, next) => {
         reqdata
       );
       const dataAfterUpdate = await services_customer.findByID(id);
-      res.status(200).json({
+      res.status(enum_status.OK).json({
         success: {
           data: dataAfterUpdate,
         },
       });
     } else {
-      res.status(404).json("not found customer update");
+      res.status(enum_status.BAD_REQUEST).json("not found customer update");
     }
   } catch (error) {
-    res.status(400).json(error);
+    res.status(enum_status.BAD_REQUEST).json(error);
   }
 };
 //delete customer
@@ -96,16 +97,16 @@ const deleteCustomer = async (req, res, next) => {
   const customers = await services_customer.findByIdAndDelete(id);
   try {
     if (customers) {
-      res.status(200).json({
+      res.status(enum_status.OK).json({
         success: {
           data: data,
         },
       });
     } else {
-      res.status(400).json("Not delete customer !");
+      res.status(enum_status.BAD_REQUEST).json("Not delete customer !");
     }
   } catch (error) {
-    res.status(400).json(error);
+    res.status(enum_status.BAD_REQUEST).json(error);
   }
 };
 module.exports = {
