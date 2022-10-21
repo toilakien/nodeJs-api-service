@@ -20,7 +20,10 @@ const addCustomer = async (req, res, next) => {
         },
       });
     } else {
-      res.status(enum_status.BAD_REQUEST).json("Customer already exists");
+      res.status(enum_status.BAD_REQUEST).json({
+        status: "Fail ",
+        message: "Customer already exists!",
+      });
     }
   } catch (error) {
     res.status(enum_status.BAD_REQUEST).json(error);
@@ -37,7 +40,10 @@ const getAllCustomer = async (req, res, next) => {
         },
       });
     } else {
-      res.status(enum_status.BAD_REQUEST).json("Not customer !");
+      res.status(enum_status.BAD_REQUEST).json({
+        status: "Fail",
+        message: "NOT FOUND CUSTOMER",
+      });
     }
   } catch (error) {
     res.status(enum_status.BAD_REQUEST).json(error);
@@ -94,12 +100,15 @@ const editCustomer = async (req, res, next) => {
 //delete customer
 const deleteCustomer = async (req, res, next) => {
   const id = req.params.id;
-  const customers = await services_customer.findByIdAndDelete(id);
+  const customer = await services_customer.findByID(id);
+
   try {
-    if (customers) {
+    if (customer) {
+      customer.delete();
+
       res.status(enum_status.OK).json({
         success: {
-          data: data,
+          data: customer,
         },
       });
     } else {

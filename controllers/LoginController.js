@@ -10,10 +10,14 @@ const login = async (req, res, next) => {
     const acountTrue = await fn_services.findUser({ username });
     if (acountTrue) {
       if (e_d_code.fn_checkcode(password, acountTrue.password)) {
-        var token = jwt.sign({ _id: acountTrue._id }, acountTrue.password);
+        var token = jwt.sign(
+          { _id: acountTrue._id },
+          process.env.ACCESS_TOKEN_SECRET,
+          { expiresIn: process.env.ACCESS_TOKEN_EXPIRE }
+        );
         return res.json({
           message: "Success",
-          data: {
+          data: { 
             token: token,
           },
         });
@@ -27,11 +31,9 @@ const login = async (req, res, next) => {
     console.log(error);
   }
 };
-//fn_hhh
 
 const verifyToken = (req, res, next) => {
   const authHeader = req.headers.authorization;
-  console.log(req.headers);
   if (authHeader) {
     const token = authHeader.split(" ")[1];
     console.log(token);
@@ -48,29 +50,7 @@ const verifyToken = (req, res, next) => {
   }
 };
 
-const verifyTokenAndAuthorization = (req, res, next) => {
-  verifyToken(req, res, () => {
-    if (req.user.id === req.params.id || req.user.isAdmin) {
-      next();
-    } else {
-      res.status(status_code.FORBIDDEN).json("You are not alowed to do that!");
-    }
-  });
-};
-
-const verifyTokenAndAdmin = (req, res, next) => {
-  verifyToken(req, res, () => {
-    if (req.user.isAdmin) {
-      next();
-    } else {
-      res.status(status_code.FORBIDDEN).json("You are not alowed to do that!");
-    }
-  });
-};
-
 module.exports = {
   login,
   verifyToken,
-  verifyTokenAndAuthorization,
-  verifyTokenAndAdmin,
 };

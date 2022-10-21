@@ -28,7 +28,7 @@ const createCustomer = (customer) => {
 };
 
 const findByIdAndDelete = (id) => {
-  return CustomerSchema.findByIdAndDelete(id);
+  return CustomerSchema.findById(id);
 };
 
 /*

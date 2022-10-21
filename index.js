@@ -24,6 +24,9 @@ app.use(bodyParser.json());
 dotenv.config();
 
 /*================================*/
+var cookieParser = require("cookie-parser");
+app.use(cookieParser());
+/*================================*/
 
 const Port = process.env.PORT;
 const DB = process.env.MONGO_URI;
