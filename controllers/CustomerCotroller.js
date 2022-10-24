@@ -118,10 +118,31 @@ const deleteCustomer = async (req, res, next) => {
     res.status(enum_status.BAD_REQUEST).json(error);
   }
 };
+const filterCustomerActive = async (req, res, next) => {
+  try {
+    const key = req.params.active;
+    console.log(key);
+    const customers = await services_customer.findAllCustomer();
+    const filCustomer = await customers.filter((e) => {
+      return e.active.toString() === key
+    })
+    res.status(enum_status.OK).json({
+      status: "Success",
+      data: filCustomer
+    })
+  } catch (error) {
+    res.status(enum_status.BAD_REQUEST).json({
+      status: "Fail",
+      message: error
+    })
+  }
+}
 module.exports = {
   addCustomer,
   getAllCustomer,
   getOneCustomer,
   editCustomer,
   deleteCustomer,
+  filterCustomerActive,
 };
+
