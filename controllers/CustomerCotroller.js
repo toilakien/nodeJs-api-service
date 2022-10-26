@@ -15,9 +15,8 @@ const addCustomer = async (req, res, next) => {
         active,
       });
       res.status(enum_status.CREATED).json({
-        success: {
-          data: newCustomer,
-        },
+        status: "Success",
+        customers: newCustomer,
       });
     } else {
       res.status(enum_status.BAD_REQUEST).json({
@@ -35,9 +34,9 @@ const getAllCustomer = async (req, res, next) => {
   try {
     if (customers) {
       res.status(enum_status.OK).json({
-        success: {
-          data: customers,
-        },
+        status: "success",
+        customers: customers,
+
       });
     } else {
       res.status(enum_status.BAD_REQUEST).json({
@@ -56,9 +55,8 @@ const getOneCustomer = async (req, res, next) => {
   try {
     if (customers) {
       res.status(enum_status.OK).json({
-        success: {
-          data: customers,
-        },
+        status: "success",
+        customers: customers,
       });
     } else {
       res.status(enum_status.BAD_REQUEST).json("Not found customer !");
@@ -86,9 +84,9 @@ const editCustomer = async (req, res, next) => {
       );
       const dataAfterUpdate = await services_customer.findByID(id);
       res.status(enum_status.OK).json({
-        success: {
-          data: dataAfterUpdate,
-        },
+        status: "success",
+        customers: dataAfterUpdate,
+
       });
     } else {
       res.status(enum_status.BAD_REQUEST).json("not found customer update");
@@ -107,12 +105,15 @@ const deleteCustomer = async (req, res, next) => {
       customer.delete();
 
       res.status(enum_status.OK).json({
-        success: {
-          data: customer,
-        },
+        status: "success",
+        customers: customer,
+
       });
     } else {
-      res.status(enum_status.BAD_REQUEST).json("Not delete customer !");
+      res.status(enum_status.BAD_REQUEST).json({
+        status: "Fail",
+        message: "Not delete customer !",
+      });
     }
   } catch (error) {
     res.status(enum_status.BAD_REQUEST).json(error);
@@ -126,10 +127,13 @@ const filterCustomerActive = async (req, res, next) => {
     const filCustomer = await customers.filter((e) => {
       return e.active.toString() === key
     })
-    res.status(enum_status.OK).json({
-      status: "Success",
-      data: filCustomer
-    })
+    if (filCustomer) {
+      res.status(enum_status.OK).json({
+        status: "Success",
+        customers: filCustomer
+      })
+    }
+
   } catch (error) {
     res.status(enum_status.BAD_REQUEST).json({
       status: "Fail",

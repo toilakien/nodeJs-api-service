@@ -33,6 +33,7 @@ const DB = process.env.MONGO_URI;
 /*================================*/
 
 //router
+
 const authRouter = require("./routers/authRouter");
 app.use("/api/v1", authRouter);
 const customerRouter = require("./routers/customerRouter");
