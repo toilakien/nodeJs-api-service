@@ -22,13 +22,12 @@ const login = async (req, res, next) => {
             user: {
               username,
               avatar: "",
-
             }
           },
         });
       } else {
         res.status(status_code.BAD_REQUEST).json("NOT FOUND 404!");
-      } 
+      }
     } else {
       res.status(status_code.BAD_REQUEST).json("NOT FOUND 404!");
     }

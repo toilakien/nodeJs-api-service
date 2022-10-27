@@ -38,6 +38,8 @@ const authRouter = require("./routers/authRouter");
 app.use("/api/v1", authRouter);
 const customerRouter = require("./routers/customerRouter");
 app.use("/api/v1/customer", customerRouter);
+const categoryRouter = require("./routers/categoryRouter");
+app.use("/api/v1/category", categoryRouter);
 /*================================*/
 
 app.listen(Port, () => {
