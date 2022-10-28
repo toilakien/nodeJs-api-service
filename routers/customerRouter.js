@@ -5,7 +5,7 @@ const verify = require("../controllers/LoginController");
 const methodCustomer = require("../controllers/CustomerCotroller");
 //router
 customerRouter.post("/", verify.verifyToken, methodCustomer.addCustomer);
-customerRouter.get("/", verify.verifyToken, methodCustomer.getAllCustomer);
+customerRouter.get("/:page", verify.verifyToken, methodCustomer.getAllCustomer);
 customerRouter.get("/:id", verify.verifyToken, methodCustomer.getOneCustomer);
 customerRouter.delete("/:id", verify.verifyToken, methodCustomer.deleteCustomer
 );

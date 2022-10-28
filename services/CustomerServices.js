@@ -1,6 +1,13 @@
 const CustomerSchema = require("../models/Customer");
-const findAllCustomer = () => {
-  return CustomerSchema.find({});
+const findAllCustomer = async (req, res, next) => {
+  const perPage = 5; // số lượng sản phẩm xuất hiện trên 1 page
+  const page = req.params.page || 1;
+  console.log("page", page);
+
+  return await CustomerSchema
+    .find({})
+    .skip((perPage * page) - perPage)
+    .limit(perPage)
 };
 /*
 

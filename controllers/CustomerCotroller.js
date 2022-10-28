@@ -1,5 +1,6 @@
 const services_customer = require("../services/CustomerServices");
 const enum_status = require("../enum/status-code.enum");
+const CustomerSchema = require("../models/Customer");
 //add customer
 const addCustomer = async (req, res, next) => {
   const { name } = req.body;
@@ -30,11 +31,15 @@ const addCustomer = async (req, res, next) => {
 };
 //get all customer
 const getAllCustomer = async (req, res, next) => {
-  const customers = await services_customer.findAllCustomer();
+  const pageCount = Math.ceil((await CustomerSchema.find({})).length / 5)
+  const customers = await services_customer.findAllCustomer(req, res);
+  console.log("111", customers.length);
   try {
     if (customers) {
       res.status(enum_status.OK).json({
         status: "success",
+        currentPage: req.params.page,
+        pageCount,
         customers: customers,
 
       });

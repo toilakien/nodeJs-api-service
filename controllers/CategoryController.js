@@ -16,7 +16,19 @@ const getAllCategory = async (req, res, next) => {
     }
 }
 const getOneCategory = async (req, res, next) => {
-
+    try {
+        const { id } = await req.params;
+        const result = await service_category.findByID(id);
+        res.status(enum_status.OK).json({
+            status: "success",
+            categorys: result
+        })
+    } catch (error) {
+        res.status(enum_status.BAD_REQUEST).json({
+            status: "Fail",
+            message: error
+        })
+    }
 }
 const postCategory = async (req, res, next) => {
     try {
