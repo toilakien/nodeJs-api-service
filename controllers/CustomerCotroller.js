@@ -18,6 +18,7 @@ const addCustomer = async (req, res, next) => {
       res.status(enum_status.CREATED).json({
         status: "Success",
         customers: newCustomer,
+        currentPage: 1
       });
     } else {
       res.status(enum_status.BAD_REQUEST).json({
