@@ -4,7 +4,6 @@ const register = async (req, res, next) => {
   const { username } = req.body;
   const password = e_d_code.fn_encode(req.body.password);
   try {
-    console.log(password);
     const user = await fn_services.findUser({ username });
     if (!user) {
       const newUser = { username: username, password: password };

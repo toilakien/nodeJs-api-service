@@ -40,9 +40,7 @@ const verifyToken = (req, res, next) => {
   const authHeader = req.headers.authorization;
   if (authHeader) {
     const token = authHeader.split(" ")[1];
-    console.log(token);
     jwt.verify(token, process.env.ACCESS_TOKEN_SECRET, (err, user) => {
-      console.log(user);
       if (err) res.status(status_code.FORBIDDEN).json("Token is not valid!");
       req.user = user;
       next();

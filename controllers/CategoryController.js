@@ -34,7 +34,6 @@ const postCategory = async (req, res, next) => {
     try {
         const { name, img } = await req.body;
         const exits = await service_category.findCategory(name);
-        console.log("cate", exits);
         if (!exits) {
             const query = await service_category.createCategory({ name, img });
             res.status(enum_status.CREATED).json({

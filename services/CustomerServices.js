@@ -2,7 +2,6 @@ const CustomerSchema = require("../models/Customer");
 const findAllCustomer = async (req, res, next) => {
   const perPage = 5; // số lượng sản phẩm xuất hiện trên 1 page
   const page = req.params.page || 1;
-  console.log("page", page);
 
   return await CustomerSchema
     .find({})
@@ -14,7 +13,6 @@ const findAllCus = async (req) => {
   const perPage = 5; // số lượng sản phẩm xuất hiện trên 1 page
   const page = req.params.page || 1;
   const key = req.params.active;
-  console.log(CustomerSchema.find({active:key}));
   return await CustomerSchema.find({active:key})
       .skip((perPage * page) - perPage)
       .limit(perPage)

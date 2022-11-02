@@ -34,7 +34,6 @@ const addCustomer = async (req, res, next) => {
 const getAllCustomer = async (req, res, next) => {
   const pageCount = Math.ceil((await CustomerSchema.find({})).length / 5)
   const customers = await services_customer.findAllCustomer(req, res);
-  console.log("111", customers.length);
   try {
     if (customers) {
       res.status(enum_status.OK).json({
@@ -129,7 +128,6 @@ const filterCustomerActive = async (req, res, next) => {
   try {
     const pageCount = Math.ceil((await CustomerSchema.find({})).length / 5)
     const customers = await services_customer.findAllCus(req);
-    console.log(customers);
     if (customers) {
       res.status(enum_status.OK).json({
         status: "Success",
