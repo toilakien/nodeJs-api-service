@@ -127,16 +127,15 @@ const deleteCustomer = async (req, res, next) => {
 };
 const filterCustomerActive = async (req, res, next) => {
   try {
-    const key = req.params.active;
-    console.log(key);
-    const customers = await services_customer.findAllCustomer();
-    const filCustomer = await customers.filter((e) => {
-      return e.active.toString() === key
-    })
-    if (filCustomer) {
+    const pageCount = Math.ceil((await CustomerSchema.find({})).length / 5)
+    const customers = await services_customer.findAllCus(req);
+    console.log(customers);
+    if (customers) {
       res.status(enum_status.OK).json({
         status: "Success",
-        customers: filCustomer
+        currentPage: req.params.page,
+        pageCount,
+        customers: customers
       })
     }
 
