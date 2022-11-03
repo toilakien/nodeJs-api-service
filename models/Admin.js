@@ -16,6 +16,10 @@ const Admin = new Schema(
     },
   },
   {
+    timestamps: true
+  }
+  ,
+  {
     collection: "account",
   }
 );

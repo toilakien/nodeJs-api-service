@@ -41,6 +41,9 @@ app.use("/api/v1/customer", customerRouter);
 const categoryRouter = require("./routers/categoryRouter");
 app.use("/api/v1/category", categoryRouter);
 /*================================*/
+const administratorRouter = require("./routers/administratorRouter");
+app.use("/api/v1/administrator", administratorRouter);
+/*================================*/
 
 app.listen(Port, () => {
   console.log(`Localhost listening on to ${Port} ...`);
